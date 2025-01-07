@@ -23,7 +23,7 @@ import {
 
 export interface GetOrCreateStakeEscrowResponse {
   stakeEscrowKey: PublicKey;
-  ix: TransactionInstruction;
+  ix: TransactionInstruction | null;
 }
 
 export interface GetOrCreateATAResponse {
