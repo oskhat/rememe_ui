@@ -28,7 +28,7 @@ export function StakeModal({
 }: StakeModalProps) {
   const [percentage, setPercentage] = useState(100);
   const amount = (maxAmount * percentage) / 100;
-  const receiveAmount = (amount * restakedPrice).toFixed(2)
+  const receiveAmount = (amount * restakedPrice * 0.99).toFixed(2)
   const [isStaking, setIsStaking] = useState(false);
 
   return (

@@ -817,11 +817,11 @@ export type Rememe = {
         kind: "struct";
         fields: [
           {
-            name: "tokenMint";
+            name: "vault";
             type: "publicKey";
           },
           {
-            name: "vault";
+            name: "tokenMint";
             type: "publicKey";
           },
           {
@@ -861,11 +861,19 @@ export type Rememe = {
             type: "publicKey";
           },
           {
+            name: "depositFeeRate";
+            type: "u64";
+          },
+          {
+            name: "rewardFeeRate";
+            type: "u64";
+          },
+          {
             name: "protocolFeesToken";
             type: "u64";
           },
           {
-            name: "protocolFeesTokenQuote";
+            name: "protocolFeesQuote";
             type: "u64";
           },
           {
@@ -882,17 +890,12 @@ export type Rememe = {
           },
           {
             name: "status";
-            docs: [
-              "Bitwise representation of the state of the pool",
-              "bit0, 1: disable deposit(vaule is 1), 0: normal",
-              "bit1, 1: disable withdraw(vaule is 2), 0: normal"
-            ];
             type: "u8";
           },
           {
             name: "padding";
             type: {
-              array: ["u8", 32];
+              array: ["u64", 64];
             };
           }
         ];
@@ -1869,11 +1872,11 @@ export const IDL: Rememe = {
         kind: "struct",
         fields: [
           {
-            name: "tokenMint",
+            name: "vault",
             type: "publicKey",
           },
           {
-            name: "vault",
+            name: "tokenMint",
             type: "publicKey",
           },
           {
@@ -1913,11 +1916,19 @@ export const IDL: Rememe = {
             type: "publicKey",
           },
           {
+            name: "depositFeeRate",
+            type: "u64",
+          },
+          {
+            name: "rewardFeeRate",
+            type: "u64",
+          },
+          {
             name: "protocolFeesToken",
             type: "u64",
           },
           {
-            name: "protocolFeesTokenQuote",
+            name: "protocolFeesQuote",
             type: "u64",
           },
           {
@@ -1934,17 +1945,12 @@ export const IDL: Rememe = {
           },
           {
             name: "status",
-            docs: [
-              "Bitwise representation of the state of the pool",
-              "bit0, 1: disable deposit(vaule is 1), 0: normal",
-              "bit1, 1: disable withdraw(vaule is 2), 0: normal",
-            ],
             type: "u8",
           },
           {
             name: "padding",
             type: {
-              array: ["u8", 32],
+              array: ["u64", 64],
             },
           },
         ],

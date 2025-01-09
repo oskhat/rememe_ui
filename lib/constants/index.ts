@@ -31,16 +31,14 @@ export const EVENT_AUTHORITY = new PublicKey(
   "5b4WFMuinigYEDxSmLJhZf5wBbxRhvFPDvNmhfaB2BbF"
 );
 export const REMEME_PROGRAM_ID = new PublicKey(
-  "EPATz1DqX8BKYevRbPoiMrW6py8Yu78dn9xxwbD5Jfa1"
+  "S3F3SGMgKp95gyA9fTgARwo4vMWXA1qwFUU8pAa19pg"
 );
-export const POOL_KEY = new PublicKey(
-  "5gbbAJDriXy7ZExsBbkMLF8v2NecGywE1Y4TRq6vFkRx"
-);
+
 
 export const TOKENS = {
   M3M3: {
     mint: M3M3_MINT,
-    restakedMint: new PublicKey("FjskD8P5xbavvrmTMXp9MB5G6mZpbRN6SkPxp6nr9JhZ"),
+    restakedMint: new PublicKey("F4KZtWNCVoBWNRJkX56iZv9uL2rGENCTGw84sXnnQ9Vw"),
     img: m3m3_img,
     decimals: 9,
   },

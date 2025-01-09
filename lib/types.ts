@@ -3,8 +3,8 @@ import { StakeEscrow, Unstake } from "@/lib/velib/types";
 import { BN } from "@coral-xyz/anchor";
 
 export interface Pool {
-  tokenMint: PublicKey;
   vault: PublicKey;
+  tokenMint: PublicKey;
   escrow: PublicKey;
   tokenVaultAccount: PublicKey;
   tokenMintDecimals: number;
@@ -14,13 +14,15 @@ export interface Pool {
   liquidTokenVault: PublicKey;
   liquidSupply: BN;
   lut: PublicKey;
+  depositFeeRate: BN;
+  rewardFeeRate: BN;
   protocolFeesToken: BN;
-  protocolFeesTokenQuote: BN;
+  protocolFeesQuote: BN;
   recentEpoch: BN;
   bump: number;
   authBump: number;
   status: number;
-  padding: number[];
+  padding: BN[];
 }   
 
 export interface UnstakeRequest {

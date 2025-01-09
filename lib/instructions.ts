@@ -39,6 +39,7 @@ import {
   DYNAMIC_VAULT_PROGRAM_ID,
   EVENT_AUTHORITY,
   STAKE_FOR_FEE_PROGRAM_ID,
+  VAULT_KEY,
 } from "./constants";
 import {
   deriveFullBalanceList,
@@ -57,7 +58,7 @@ function findReplaceableTopStaker(
     stakeForFee.accountStates.topStakerListState
   ).map((s) => {
     return deriveStakeEscrow(
-      stakeForFee.accountStates.feeVault.lockEscrow,
+      stakeForFee.feeVaultKey,  
       s.owner,
       stakeForFee.stakeForFeeProgram.programId
     );
@@ -157,15 +158,15 @@ export async function stake(
       )
     );
   }
-  const smallestStakeEscrow = new PublicKey(
-    "7ZFT7XMTP5TbsVQBXaESS1u22dC7ZdxWwSuyQ9hZiXk9"
-  ); // TODO
+  const smallestStakeEscrow =
+    stakeForFee.findSmallestStakeEscrowInFullBalanceList(pubkey);
   if (!smallestStakeEscrow) {
     throw new Error("Smallest stake escrow not found");
   }
 
   const remainingAccounts: Array<AccountMeta> = [];
   const replaceableTopStakerCount = 2;
+  console.log(stakeForFee.accountStates.topStakerListState);
   const smallestStakeEscrows: Array<AccountMeta> = findReplaceableTopStaker(
     replaceableTopStakerCount,
     stakeForFee
@@ -176,6 +177,7 @@ export async function stake(
       isSigner: false,
     };
   });
+  console.log(smallestStakeEscrows[0].pubkey.toBase58());
 
   remainingAccounts.push(...smallestStakeEscrows);
 
@@ -448,9 +450,8 @@ export async function cancelUnstake(
     remainingAccounts.push(...smallestStakeEscrows);
   }
 
-  const smallestStakeEscrow =new PublicKey(
-    "7ZFT7XMTP5TbsVQBXaESS1u22dC7ZdxWwSuyQ9hZiXk9"
-  ); // TODO  
+  const smallestStakeEscrow =
+    stakeForFee.findSmallestStakeEscrowInFullBalanceList(pubkey);
   if (!smallestStakeEscrow) {
     throw new Error("Smallest stake escrow not found");
   }

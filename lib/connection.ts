@@ -42,9 +42,9 @@ export async function manualSendTransactionV0(
     signedTransaction.sign(signers);
   }
 
-  const txSigStake = await connection.sendTransaction(signedTransaction, {});
+  const txSigStake = await connection.sendTransaction(signedTransaction, {skipPreflight: true});
   console.log(
-    `sent raw, waiting : https://explorer.solana.com/tx/${txSigStake}?cluster=custom&customUrl=http%3A%2F%2Flocalhost%3A8899`
+    `sent raw, waiting : https://solscan.io/tx/${txSigStake}`
   );
   toast.info("Tx waiting for confirmation");
   await connection.confirmTransaction(txSigStake);

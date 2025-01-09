@@ -28,7 +28,7 @@ export function UnstakeModal({
 }: UnstakeModalProps) {
   const [percentage, setPercentage] = useState(100);
   const amount = (maxAmount * percentage) / 100;
-  const receiveAmount = (amount * restakedPrice).toFixed(2)
+  const receiveAmount = (amount * restakedPrice).toFixed(2) 
   const [isUnstaking, setIsUnstaking] = useState(false);
 
   return (
@@ -67,8 +67,8 @@ export function UnstakeModal({
                   alt="M3M3"
                   className="h-6 w-6 rounded-full bg-amber-500"
                 />
-                <span className="text-2xl font-bold text-gray-400">
-                  {amount.toFixed(1)} r3M3M3
+                <span className="text-xl font-bold text-gray-400">
+                  {amount.toFixed(1)} s3M3M3
                 </span>
               </div>
             </div>

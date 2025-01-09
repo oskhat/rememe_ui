@@ -7,8 +7,13 @@ import { Unbounded } from 'next/font/google'
 const unbounded = Unbounded({ subsets: ['latin'], weight: '300' })
 
 export const metadata: Metadata = {
-  title: "R3STAK3D",
-  description: "R3STAK3D",
+  title: "S3F3",
+  description: "S3F3 is liquid staking platform built on top of the M3M3 mechanism",
+  icons: {
+    icon: "/favicon.ico",
+    shortcut: "/favicon.ico",
+    apple: "/favicon.ico",
+  },
 };
 
 const WalletContext = dynamic(() => import('@/api/WalletContext'), {

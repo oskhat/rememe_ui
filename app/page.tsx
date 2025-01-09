@@ -29,14 +29,11 @@ import { manualSendTransactionV0 } from "@/lib/connection";
 import { bnToNumberWithDecimals, bnToStringWithDecimals } from "@/lib/utils";
 import { StakeEscrow } from "@/lib/velib/types";
 import { UnstakeModal } from "@/components/unstake-modal";
-import { FAQ } from "@/components/faq";
-import { UnstakeRequests } from "@/components/unstake-requests";
 import { Bounce, ToastContainer, toast } from "react-toastify";
 import { getLiquidStakingPoolAddress } from "@/lib/pda";
-
-const mainnetConnection = new Connection(
-  "https://mainnet.helius-rpc.com/?api-key=26a01b47-d973-45ea-a0ed-b174fd5b9866"
-);
+import { UnstakeRequests } from "@/components/unstake-requests";
+import { BN } from "bn.js";
+import { FAQ } from "@/components/faq";
 
 export default function M3M3Page() {
   const { publicKey, wallet, signTransaction } = useWallet();
@@ -213,7 +210,9 @@ export default function M3M3Page() {
     );
     const poolTokenVaultAmount = poolTokenVaultData?.value.uiAmount ?? 0;
     setRestakedAmount(
-      bnToNumberWithDecimals(updatedEscrow?.stakeAmount) + +poolTokenVaultAmount
+      bnToNumberWithDecimals(updatedEscrow?.stakeAmount) +
+        +poolTokenVaultAmount -
+        bnToNumberWithDecimals(updatedPool.protocolFeesToken)
     );
     setUnstakeRequests([]);
     const fetchUnstakeRequests = async () => {
@@ -275,9 +274,9 @@ export default function M3M3Page() {
   }, [publicKey]);
 
   useEffect(() => {
-    if (!mainnetConnection) return;
+    if (!connection) return;
     StakeForFee.create(connection, FEE_POOL).then((x) => setStakeForFee(x));
-  }, [mainnetConnection]);
+  }, [connection]);
 
   useEffect(() => {
     if (!restakedAmount || !pool) return;
@@ -303,8 +302,11 @@ export default function M3M3Page() {
       );
       const poolTokenVaultAmount = poolTokenVaultData?.value.uiAmount ?? 0;
       setRestakedAmount(
-        bnToNumberWithDecimals(escrow?.stakeAmount) + +poolTokenVaultAmount
+        bnToNumberWithDecimals(escrow?.stakeAmount) +
+          +poolTokenVaultAmount -
+          bnToNumberWithDecimals(pool.protocolFeesToken)
       );
+      
       return pool;
     }
     if (program) {
@@ -368,7 +370,7 @@ export default function M3M3Page() {
                       M3M3 LIQUID STAKING POOL
                     </h1>
                     <div className="text-black/60 text-sm">
-                      Stake any M3M3 amount to earn rewards. R3M3M3 is LST for
+                      Stake any M3M3 amount to earn rewards. s3M3M3 is LST for
                       M3M3.
                     </div>
                   </div>
@@ -381,25 +383,29 @@ export default function M3M3Page() {
                     Total <span className="text-black">M3M3</span> Staked
                   </div>
                   <div className="text-4xl font-bold text-black">
-                    {bnToStringWithDecimals(poolEscrow?.stakeAmount)}
+                    {bnToStringWithDecimals(
+                      poolEscrow?.stakeAmount?.sub(
+                        pool ? pool.protocolFeesToken : new BN(0)
+                      )
+                    )}
                   </div>
-                  <div className="text-black/60 text-sm mt-1">
+                  {/* <div className="text-black/60 text-sm mt-1">
                     ≈ $
                     {(
                       bnToNumberWithDecimals(poolEscrow?.stakeAmount) *
                       restakedPrice
                     ).toFixed(2)}
-                  </div>
+                  </div> */}
                 </div>
                 <div className="flex flex-col">
                   <div className="text-black/60 text-sm mb-2">
-                    <span className="text-black">R3M3M3</span> supply
+                    <span className="text-black">s3M3M3</span> supply
                   </div>
                   <div className="text-4xl font-bold text-black">
                     {bnToStringWithDecimals(pool?.liquidSupply)}
                   </div>
                   <div className="text-black/60 text-sm mt-1">
-                    1 M3M3 ≈ {restakedPrice.toFixed(2)} R3M3M3
+                    1 M3M3 ≈ {restakedPrice.toFixed(2)} s3M3M3
                   </div>
                 </div>
                 <div className="flex flex-col">
@@ -439,11 +445,11 @@ export default function M3M3Page() {
             </div>
             <div className="flex-1">
               <div className="text-gray-400 mb-2">
-                Your <span className="text-amber-600">R3M3M3</span> balance
+                Your <span className="text-amber-600">s3M3M3</span> balance
               </div>
               <div className="text-3xl font-bold text-white">
                 {tokenRestakedBalance.toFixed(1)}{" "}
-                <span className="text-gray-400">R3M3M3</span>
+                <span className="text-gray-400">s3M3M3</span>
               </div>
               <div className="text-sm text-gray-400 mt-1">
                 Restaked tokens earn additional rewards
@@ -469,8 +475,8 @@ export default function M3M3Page() {
           onCancelRequest={cancelHandler}
           onWithdraw={withdrawHandler}
         />
-        {/* <FAQ /> */}
-      </main>
+        <FAQ />
+      </main> 
       <StakeModal
         isOpen={isStakeModalOpen}
         onClose={() => {
