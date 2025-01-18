@@ -47,7 +47,7 @@ import {
   deriveTopStakerList,
 } from "./velib/helpers/pda";
 import { StakeForFee } from "./velib";
-import { findReplaceableTopStaker as findReplaceableTopStakerVelib } from "@/lib/velib/helpers/staker_for_fee";
+import { findLargestStakerNotInTopListFromFullBalanceList, findReplaceableTopStaker as findReplaceableTopStakerVelib } from "@/lib/velib/helpers/staker_for_fee";
 
 function findReplaceableTopStaker(
   lookupNumber: number,
@@ -59,6 +59,19 @@ function findReplaceableTopStaker(
   ).map((s) => {
     return deriveStakeEscrow(
       stakeForFee.feeVaultKey,  
+      s.owner,
+      stakeForFee.stakeForFeeProgram.programId
+    );
+  });
+}
+
+function findLargestStakerNotInTopListFromFullBalanceListVelib(lookupNumber: number, stakeForFee: StakeForFee) {
+  return findLargestStakerNotInTopListFromFullBalanceList(
+    lookupNumber,
+    stakeForFee.accountStates.fullBalanceListState
+  ).map((s) => {
+    return deriveStakeEscrow(
+      stakeForFee.feeVaultKey,
       s.owner,
       stakeForFee.stakeForFeeProgram.programId
     );
@@ -304,8 +317,7 @@ export async function requestUnstake(
       ).inTopList
     )
   ) {
-    const candidateToEnterTopList: Array<AccountMeta> = stakeForFee
-      .findLargestStakerNotInTopListFromFullBalanceList(3)
+    const candidateToEnterTopList: Array<AccountMeta> = findLargestStakerNotInTopListFromFullBalanceListVelib(3, stakeForFee)
       .map((key) => {
         return {
           pubkey: key,
@@ -313,8 +325,7 @@ export async function requestUnstake(
           isWritable: true,
         };
       });
-
-    remainingAccounts.push(...candidateToEnterTopList);
+    // remainingAccounts.push(...candidateToEnterTopList);
   }
 
   const unstakeIx = await program.methods

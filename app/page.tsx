@@ -148,7 +148,7 @@ export default function M3M3Page() {
         pool.lut,
         signTransaction
       );
-      toast.success("Unstake request sent");
+      toast.success("Withdraw request sent");
       updateStates();
     } else {
       toast.error("Not ready");
@@ -173,7 +173,7 @@ export default function M3M3Page() {
         pool.lut,
         signTransaction
       );
-      toast.success("Unstake request sent");
+      toast.success("Cancel request sent");
       updateStates();
     } else {
       toast.error("Not ready");
@@ -405,7 +405,7 @@ export default function M3M3Page() {
                     {bnToStringWithDecimals(pool?.liquidSupply)}
                   </div>
                   <div className="text-black/60 text-sm mt-1">
-                    1 M3M3 ≈ {restakedPrice.toFixed(2)} s3M3M3
+                    1 s3M3M3 ≈ {restakedPrice.toFixed(3)} M3M3
                   </div>
                 </div>
                 <div className="flex flex-col">

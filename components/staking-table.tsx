@@ -17,7 +17,7 @@ interface StakingRowProps {
   totalStaked: string
   isUnstaked?: boolean
 }
-
+``
 function StakingRow({ icon, name, status, yourStake, rewards, totalStaked, isUnstaked }: StakingRowProps) {
   return (
     <TableRow className="hover:bg-amber-950/20">

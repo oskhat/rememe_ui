@@ -32,6 +32,7 @@ export async function manualSendTransactionV0(
     recentBlockhash: (await connection.getLatestBlockhash()).blockhash,
     instructions: [
       ComputeBudgetProgram.setComputeUnitLimit({ units: 600000 }),
+      ComputeBudgetProgram.setComputeUnitPrice({ microLamports: 1000000 }),
       ...instructions,
     ],
   }).compileToV0Message([lookupTableAccount]);
@@ -41,8 +42,11 @@ export async function manualSendTransactionV0(
   if (signers.length > 0) {
     signedTransaction.sign(signers);
   }
-
-  const txSigStake = await connection.sendTransaction(signedTransaction, {skipPreflight: true});
+  console.log(signedTransaction)
+  const txSigStake = await connection.sendTransaction(signedTransaction, {
+    skipPreflight: false,
+    preflightCommitment: "confirmed",
+  });
   console.log(
     `sent raw, waiting : https://solscan.io/tx/${txSigStake}`
   );
